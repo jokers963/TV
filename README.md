@@ -1,5 +1,9 @@
 # 影視TV
 
+## 落雨秋项目原理
+
+[播放器、配置与维护说明](LUOYUQIU_ARCHITECTURE.md) · [配套接口原理](https://github.com/jokers963/CatVodSpider/blob/main/LUOYUQIU_ARCHITECTURE.md)
+
 適用於 Android TV 與手機的影音應用程式，整合媒體瀏覽與播放體驗，並支援外部配置與 [CatVod](https://github.com/CatVodTVOfficial/CatVodTVJarLoader) Spider 介面擴充。
 
 **App 本身不內建或提供任何內容來源。** 外部內容需自行配置，也可開啟本地媒體檔案或推送媒體網址。
