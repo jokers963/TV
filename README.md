@@ -1,5 +1,9 @@
 # 影視TV
 
+## AI 接手与协作
+
+[先读 AGENTS.md](AGENTS.md) → [两个仓库共用的状态与交接记录](https://github.com/jokers963/CatVodSpider/blob/main/AI_HANDOFF.md)。原理文档按任务阅读，不必重新研究全仓。
+
 ## 落雨秋项目原理
 
 [播放器、配置与维护说明](LUOYUQIU_ARCHITECTURE.md) · [配套接口原理](https://github.com/jokers963/CatVodSpider/blob/main/LUOYUQIU_ARCHITECTURE.md)
