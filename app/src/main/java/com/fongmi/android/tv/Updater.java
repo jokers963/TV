@@ -46,14 +46,23 @@ public class Updater implements Download.Callback, UpdateListener {
     }
 
     public Updater force() {
+        if (isCustomBuild()) {
+            Notify.show(R.string.update_unavailable);
+            return this;
+        }
         Notify.show(R.string.update_check);
         Setting.putUpdate(true);
         return this;
     }
 
     public void start(FragmentActivity activity) {
+        if (isCustomBuild()) return;
         if (!Setting.getUpdate()) return;
         Task.execute(() -> doInBackground(activity));
+    }
+
+    private boolean isCustomBuild() {
+        return BuildConfig.APPLICATION_ID.equals("com.jokers963.luoyuqiu");
     }
 
     private void doInBackground(FragmentActivity activity) {

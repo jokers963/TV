@@ -1,7 +1,7 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <!-- App -->
-    <string name="app_name">TV</string>
+    <string name="app_name">落雨秋</string>
 
     <!-- Live -->
     <string name="live_pass">Pass</string>
@@ -368,6 +368,7 @@
     <!-- Update -->
     <string name="update_version">New version <xliff:g name="name">%s</xliff:g></string>
     <string name="update_check">Checking for updates…</string>
+    <string name="update_unavailable">Updates for this custom build are not available yet</string>
     <string name="update_confirm">Update</string>
 
     <!-- Crash -->

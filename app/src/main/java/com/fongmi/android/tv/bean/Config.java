@@ -10,6 +10,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.fongmi.android.tv.App;
+import com.fongmi.android.tv.BuildConfig;
 import com.fongmi.android.tv.db.AppDatabase;
 import com.github.catvod.utils.Prefers;
 import com.google.gson.annotations.SerializedName;
@@ -21,6 +22,8 @@ import java.util.List;
 
 @Entity(indices = @Index(value = {"url", "type"}, unique = true))
 public class Config {
+
+    private static final String LUOYUQIU_URL = "https://jokers963.github.io/CatVodSpider/json/luoyuqiu.json";
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -92,7 +95,7 @@ public class Config {
 
     public static Config vod() {
         Config item = AppDatabase.get().getConfigDao().findOne(0);
-        return item == null ? create(0) : item;
+        return item == null ? create(0, BuildConfig.APPLICATION_ID.equals("com.jokers963.luoyuqiu") ? LUOYUQIU_URL : "") : item;
     }
 
     public static Config live() {

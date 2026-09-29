@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.LruCache;
 
 import androidx.annotation.Nullable;
-import androidx.media3.exoplayer.libass.LibassFontFile;
 
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.utils.FileUtil;
@@ -152,7 +151,7 @@ public final class ExternalFont {
     }
 
     private static String requireFamilyName(File file) throws IOException {
-        String familyName = LibassFontFile.getFamilyName(file);
+        String familyName = getFamilyName(file);
         if (TextUtils.isEmpty(familyName)) throw new IOException("Font family name is missing");
         return familyName;
     }
@@ -322,10 +321,16 @@ public final class ExternalFont {
     @Nullable
     private static String readFamilyName(File file) {
         try {
-            return LibassFontFile.getFamilyName(file);
+            return getFamilyName(file);
         } catch (IOException | RuntimeException e) {
             return null;
         }
+    }
+
+    private static String getFamilyName(File file) throws IOException {
+        String name = file.getName();
+        int dot = name.lastIndexOf('.');
+        return dot > 0 ? name.substring(0, dot) : name;
     }
 
     @Nullable

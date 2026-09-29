@@ -1066,12 +1066,14 @@ public class VideoActivity extends PlaybackActivity implements VodPlaybackHost, 
 
     private void showControl(View view) {
         mBinding.control.getRoot().setVisibility(View.VISIBLE);
+        mBinding.widget.size.setVisibility(mBinding.widget.size.getText().length() == 0 ? View.GONE : View.VISIBLE);
         view.requestFocus();
         setR1Callback();
     }
 
     private void hideControl() {
         mBinding.control.getRoot().setVisibility(View.GONE);
+        mBinding.widget.size.setVisibility(View.GONE);
         App.removeCallbacks(mR1);
     }
 
@@ -1246,7 +1248,9 @@ public class VideoActivity extends PlaybackActivity implements VodPlaybackHost, 
 
     @Override
     protected void onSizeChanged(VideoSize size) {
-        mBinding.widget.size.setText(player().getSizeText());
+        String resolution = player().getResolutionText();
+        mBinding.widget.size.setText(resolution);
+        mBinding.widget.size.setVisibility(resolution.isEmpty() || !isVisible(mBinding.control.getRoot()) ? View.GONE : View.VISIBLE);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.fongmi.android.tv.ui.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,8 @@ public class SearchAdapter extends BaseDiffAdapter<Vod, SearchAdapter.ViewHolder
         holder.binding.site.setVisibility(item.getSiteVisible());
         holder.binding.remark.setVisibility(item.getRemarkVisible());
         holder.binding.getRoot().setOnClickListener(v -> listener.onItemClick(item));
-        ImgUtil.load(item.getName(), item.getPic(), holder.binding.image);
+        ImgUtil.load(item.getName(), item.getPic(), holder.binding.image, false);
+        holder.binding.image.setVisibility(View.VISIBLE);
     }
 
     @Override

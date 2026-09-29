@@ -239,6 +239,12 @@ public class PlayerManager implements ParseCallback {
         return (getVideoWidth() == 0 && getVideoHeight() == 0) ? "" : getVideoWidth() + " x " + getVideoHeight();
     }
 
+    public String getResolutionText() {
+        int width = getVideoWidth();
+        int height = getVideoHeight();
+        return width <= 0 || height <= 0 ? "" : width + " × " + height;
+    }
+
     public String getDecodeText() {
         return ResUtil.getStringArray(R.array.select_decode)[decode];
     }

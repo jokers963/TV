@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import androidx.collection.ArrayMap;
 
 import com.github.catvod.net.interceptor.AuthInterceptor;
+import com.github.catvod.net.interceptor.PngTsInterceptor;
 import com.github.catvod.net.interceptor.RequestInterceptor;
 import com.github.catvod.net.interceptor.ResponseInterceptor;
 
@@ -82,7 +83,7 @@ public class OkHttp {
 
     public static synchronized OkHttpClient player() {
         if (get().player != null) return get().player;
-        return get().player = getBuilder().build();
+        return get().player = getBuilder().addNetworkInterceptor(new PngTsInterceptor()).build();
     }
 
     public static OkHttpClient client(long timeout) {

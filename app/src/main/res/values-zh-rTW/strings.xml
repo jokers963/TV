@@ -1,7 +1,7 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <!-- App -->
-    <string name="app_name">影視</string>
+    <string name="app_name">落雨秋</string>
 
     <!-- Live -->
     <string name="live_pass">密碼</string>
@@ -368,6 +368,7 @@
     <!-- Update -->
     <string name="update_version">發現新版本 <xliff:g name="name">%s</xliff:g></string>
     <string name="update_check">正在檢查更新…</string>
+    <string name="update_unavailable">定製版暫未開放線上更新</string>
     <string name="update_confirm">更新</string>
 
     <!-- Crash -->

@@ -1171,11 +1171,13 @@ public class VideoActivity extends PlaybackActivity implements Clock.Callback, C
         mBinding.control.back.setVisibility(isLock() ? View.GONE : View.VISIBLE);
         mBinding.control.top.setVisibility(isLock() ? View.GONE : View.VISIBLE);
         mBinding.control.getRoot().setVisibility(View.VISIBLE);
+        mBinding.widget.size.setVisibility(mBinding.widget.size.getText().length() == 0 ? View.GONE : View.VISIBLE);
         setR1Callback();
     }
 
     private void hideControl() {
         mBinding.control.getRoot().setVisibility(View.GONE);
+        mBinding.widget.size.setVisibility(View.GONE);
         App.removeCallbacks(mR1);
     }
 
@@ -1366,6 +1368,9 @@ public class VideoActivity extends PlaybackActivity implements Clock.Callback, C
 
     @Override
     protected void onSizeChanged(VideoSize size) {
+        String resolution = player().getResolutionText();
+        mBinding.widget.size.setText(resolution);
+        mBinding.widget.size.setVisibility(resolution.isEmpty() || !isVisible(mBinding.control.getRoot()) ? View.GONE : View.VISIBLE);
         changeHeight();
         checkOrientation();
     }

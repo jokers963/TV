@@ -23,7 +23,6 @@ import androidx.media3.exoplayer.analytics.PlayerId;
 import androidx.media3.exoplayer.audio.AudioSink;
 import androidx.media3.exoplayer.audio.AudioTrackAudioOutputProvider;
 import androidx.media3.exoplayer.audio.DefaultAudioSink;
-import androidx.media3.exoplayer.libass.LibassPlaybackSession;
 import androidx.media3.exoplayer.source.preload.DefaultPreloadManager;
 import androidx.media3.exoplayer.text.TextOutput;
 import androidx.media3.exoplayer.text.TextRenderer;
@@ -104,11 +103,11 @@ public final class ExoUtil {
     }
 
     static RenderersFactory buildRenderersFactory() {
-        return new ExoRenderersFactory(null, null, null);
+        return new ExoRenderersFactory(null);
     }
 
-    static RenderersFactory buildRenderersFactory(AudioProcessor audioProcessor, TextOutput secondaryTextOutput, LibassPlaybackSession libassPlaybackSession) {
-        return new ExoRenderersFactory(audioProcessor, secondaryTextOutput, libassPlaybackSession);
+    static RenderersFactory buildRenderersFactory(AudioProcessor audioProcessor) {
+        return new ExoRenderersFactory(audioProcessor);
     }
 
     private static AudioSink buildAudioSink(Context context, boolean enableFloatOutput, boolean enableAudioOutputPlaybackParams, @Nullable AudioProcessor audioProcessor) {
@@ -121,14 +120,10 @@ public final class ExoUtil {
     private static final class ExoRenderersFactory extends DefaultRenderersFactory {
 
         @Nullable private final AudioProcessor audioProcessor;
-        @Nullable private final TextOutput secondaryTextOutput;
-        @Nullable private final LibassPlaybackSession libassPlaybackSession;
 
-        private ExoRenderersFactory(@Nullable AudioProcessor audioProcessor, @Nullable TextOutput secondaryTextOutput, @Nullable LibassPlaybackSession libassPlaybackSession) {
+        private ExoRenderersFactory(@Nullable AudioProcessor audioProcessor) {
             super(App.get());
             this.audioProcessor = audioProcessor;
-            this.secondaryTextOutput = secondaryTextOutput;
-            this.libassPlaybackSession = libassPlaybackSession;
             setEnableDecoderFallback(true);
             setExtensionRendererMode(EXTENSION_RENDERER_MODE_ON);
             setDolbyVisionOutputPolicy(DecodeSetting.getDolbyVisionOutputPolicy());
@@ -142,13 +137,6 @@ public final class ExoUtil {
         @Override
         protected void buildMiscellaneousRenderers(@NonNull Context context, @NonNull Handler eventHandler, int extensionRendererMode, @NonNull ArrayList<Renderer> out) {
             super.buildMiscellaneousRenderers(context, eventHandler, extensionRendererMode, out);
-            if (libassPlaybackSession != null && libassPlaybackSession.isAvailable()) out.add(libassPlaybackSession.createClockRenderer());
-        }
-
-        @Override
-        protected void buildTextRenderers(@NonNull Context context, @NonNull TextOutput output, @NonNull Looper outputLooper, int extensionRendererMode, @NonNull ArrayList<Renderer> out) {
-            super.buildTextRenderers(context, output, outputLooper, extensionRendererMode, out);
-            if (secondaryTextOutput != null) out.add(new TextRenderer(secondaryTextOutput, outputLooper));
         }
     }
 }
