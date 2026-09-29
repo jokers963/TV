@@ -36,6 +36,7 @@ android {
         }
         mobile {
             dimension "device"
+            applicationId "com.jokers963.luoyuqiu"
         }
     }
 
