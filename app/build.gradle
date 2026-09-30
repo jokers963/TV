@@ -37,8 +37,8 @@ android {
         mobile {
             dimension "device"
             applicationId "com.jokers963.luoyuqiu"
-            versionCode 56301
-            versionName "5.6.3-lyq.1"
+            versionCode 56302
+            versionName "5.6.3-lyq.2"
         }
     }
 

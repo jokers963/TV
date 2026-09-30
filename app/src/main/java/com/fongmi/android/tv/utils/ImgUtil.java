@@ -33,11 +33,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.net.HttpHeaders;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import jahirfiquitiva.libs.textdrawable.TextDrawable;
@@ -47,7 +45,7 @@ public class ImgUtil {
     private static final int MAX_CACHE_SIZE = 16 * 1024 * 1024;
     private static final int MAX_DATA_URI_LENGTH = 8 * 1024 * 1024;
     private static final Pattern IMAGE_MIME = Pattern.compile("image/[a-z0-9.+-]+");
-    private static final Set<String> failed = Collections.synchronizedSet(new HashSet<>());
+    private static final Cache<String, Boolean> failed = CacheBuilder.newBuilder().maximumSize(512).expireAfterWrite(2, TimeUnit.MINUTES).build();
     private static final Cache<String, Image> CACHE = CacheBuilder.newBuilder().maximumWeight(MAX_CACHE_SIZE).weigher((String key, Image value) -> value.data().length).build();
 
     public static void logo(ImageView view) {
@@ -81,7 +79,7 @@ public class ImgUtil {
     public static void load(String text, String url, ImageView view, boolean vod) {
         view.setScaleType(vod ? CENTER_CROP : FIT_CENTER);
         if (!vod) view.setVisibility(TextUtils.isEmpty(url) ? View.GONE : View.VISIBLE);
-        if (TextUtils.isEmpty(url) || failed.contains(url)) view.setImageDrawable(getTextDrawable(text, vod));
+        if (TextUtils.isEmpty(url) || failed.getIfPresent(url) != null) view.setImageDrawable(getTextDrawable(text, vod));
         else try {
             RequestBuilder<Drawable> builder = Glide.with(view).load(getUrl(url)).listener(getListener(text, url, view, vod));
             if (vod) builder.centerCrop().into(view);
@@ -111,7 +109,7 @@ public class ImgUtil {
         if (TextUtils.isEmpty(key)) return "";
         if (CACHE.asMap().computeIfAbsent(key, ignored -> decode(url)) == null) return "";
         String address = Server.get().getAddress("/image/" + key);
-        failed.remove(address);
+        failed.invalidate(address);
         return address;
     }
 
@@ -157,7 +155,7 @@ public class ImgUtil {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, @NonNull Target<Drawable> target, boolean isFirstResource) {
                 view.setImageDrawable(getTextDrawable(text, vod));
-                failed.add(url);
+                failed.put(url, true);
                 return true;
             }
 
