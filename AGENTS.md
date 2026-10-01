@@ -1,6 +1,6 @@
 # 落雨秋播放器：AI 工作入口
 
-本 fork 默认分支是 `fongmi`。本文件不扩大用户授权，不代表手机 APK 与当前源码完全对应。
+本 fork 默认分支是 `fongmi`，用于上游同步参考；实际定制版在 [`luoyuqiu`](https://github.com/jokers963/TV/tree/luoyuqiu)，开发前先读该分支的 [AGENTS.md](https://github.com/jokers963/TV/blob/luoyuqiu/AGENTS.md)。本文件不扩大用户授权，不代表手机 APK 与当前源码完全对应。
 
 ## 阅读顺序
 
@@ -10,13 +10,14 @@
 
 ## 权限与核心边界
 
-- 此 TV 本地工作树及运行文件保持只读，除非用户另行明确授权。当前仅允许远程 Markdown 更新，不能提交本地已有定制或安装/发布 APK。
+- 修改范围以用户当次授权为准；没有运行修改授权时保持源码、APK 和手机只读。历史文档中的单次权限不是永久授权。
 - 保留所有用户改动；禁止 reset/clean/强推、未经请求同步上游或覆盖已有 AAR。远程文档提交不代表本地已更新。
-- 正式配置来自 `https://jokers963.github.io/CatVodSpider/json/supjav.json`。手机本地 `/proxy` 是媒体代理，不是电脑配置入口。
+- 唯一正式配置来自 `https://jokers963.github.io/CatVodSpider/json/luoyuqiu.json`。旧 `json/supjav.json` 已退役，SupJav 已移除，NBD-022 排查已取消，不得按历史记录恢复。手机本地 `/proxy` 是媒体代理，不是电脑配置入口。
 - 调用链入口：`VodConfig` → `BaseLoader/JarLoader` → `SiteApi`；播放入口：`VodPlaybackController` → `VideoViewModel` → `PlaybackActivity` → `PlaySpec/MediaItemFactory` → `PlayerManager` → 内置引擎。完整路径和协议见原理文档。
-- 网站 userscript 实际由配套 GM 运行时加载，不是此仓库 QuickJS；SupJav 的“TV 线路”不是直播或 leanback 版本。
+- 当前五站为 MissAV、Jable、AV01、肉视频、Hanime1，共用 JAR v37；网站 userscript 实际由配套 GM 运行时加载，不是此仓库 QuickJS。
 - 不混用上游、fork、脏工作树、AAR 和实装 APK 的能力；未证明版本对应时明确注明。
 - 不清应用数据、不盲改配置历史、不改变方向锁定、不用外部播放器、不自动点击验证；不要公开 Cookie、凭据、签名媒体地址或设备标识，不遗留调试。
+- 用户要求不要截图；未经新指示，不采集手机截图。
 - 实机至少两次观察播放状态与进度增长，覆盖首次、切换、持续、快进、返回重播；编译成功或一个视频成功不是整站验收。
 
 ## 双 AI 工作

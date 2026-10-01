@@ -2,6 +2,8 @@
 
 记录日期：2026-09-27。本文区分远程 fork、上游、本地定制和手机安装版本；它是研究说明，不是播放器或所有站点的完整验收报告。
 
+2026-10-01 维护提示：以下研究基线、旧 APK 和超时表是历史快照，不代表当前正式版本。定制版源码入口是 [`luoyuqiu` 分支](https://github.com/jokers963/TV/tree/luoyuqiu)，其构建/签名说明见 [README](https://github.com/jokers963/TV/blob/luoyuqiu/README.md)；当前配置为 `https://jokers963.github.io/CatVodSpider/json/luoyuqiu.json`，五站共用 v37。SupJav 已移除、NBD-022 已取消，最新状态与未验证项见 [AI_HANDOFF 顶部](https://github.com/jokers963/CatVodSpider/blob/main/AI_HANDOFF.md)。
+
 配套文档：[配置、Spider 与网站脚本原理](https://github.com/jokers963/CatVodSpider/blob/main/LUOYUQIU_ARCHITECTURE.md)。
 
 ## 1. 研究基线与不能混用的版本
@@ -11,7 +13,7 @@
 | 本 TV fork | `fongmi` 分支，源码基线 `4afc4473e22a7ed3d98ee12233e0c2a490061000` |
 | 上游 FongMi/TV | 对照 `bed6ef2b7fa6a1022cdd8682fac7a04d5a514ba2` |
 | 配套 CatVodSpider fork | `main`，源码基线 `1d97a24cab319345218cc58b80091b9b1c1af879` |
-| 正式接口 | `https://jokers963.github.io/CatVodSpider/json/supjav.json` |
+| 研究时接口 | 旧 `json/supjav.json`（已删除；当前使用 `json/luoyuqiu.json`） |
 | 研究时手机已装 APK | `com.fongmi.android.tv`，版本 5.6.5 |
 | 研究时本地构建文件 | 标注 5.6.3，并有未提交的播放器定制 |
 
@@ -58,7 +60,7 @@ TV 是宿主，不自带内容来源；外部配置定义来源，Spider 提供�
 
 ## 4. Spider 运行与数据协议
 
-[BaseLoader](app/src/main/java/com/fongmi/android/tv/api/loader/BaseLoader.java) 按 API 形式路由：`csp_` 对应 Java JAR，`.js` 对应 QuickJS，`.py` 对应 Python。当前落雨秋四站选择 `csp_GMSubs`，所以其 `.user.js` 是 GM 插件加载的网页脚本，并未由 QuickJS 直接执行。
+[BaseLoader](app/src/main/java/com/fongmi/android/tv/api/loader/BaseLoader.java) 按 API 形式路由：`csp_` 对应 Java JAR，`.js` 对应 QuickJS，`.py` 对应 Python。当前落雨秋五站选择 `csp_GMSubs`，所以其 `.user.js` 是 GM 插件加载的网页脚本，并未由 QuickJS 直接执行。
 
 [JarLoader](app/src/main/java/com/fongmi/android/tv/api/loader/JarLoader.java) 下载 JAR、标记只读，通过 `DexClassLoader` 和宿主类加载器加载 DEX，按 `com.github.catvod.spider.` 加类名实例化，设置 `siteKey` 并调用 `init(context, ext)`。加载器及站点实例会缓存；JAR URL、站点键和可选 MD5 影响缓存处理。
 
@@ -134,10 +136,10 @@ ExoPlayer 和 mpv 都是应用内置引擎，不等于启动外部播放器。�
 | --- | --- |
 | 首页、详情、播放结果任务 | `Constant.TIMEOUT_VOD` 为 30 秒 |
 | 宿主默认解析/WebView | 通常为独立的 15 秒常量 |
-| 播放器启动准备 | 点播直接播放路径使用 `Site.getTimeout()`，默认 15 秒；当前四站配置为 60 秒 |
+| 播放器启动准备 | 点播直接播放路径使用 `Site.getTimeout()`，默认 15 秒；研究时四站配置为 60 秒 |
 | GM 网页等待 | 第三方插件有独立约 40 秒超时处理 |
-| SupJav/MissAV 脚本等待 | 普通页面可等 35 秒，验证页面可等 55 秒 |
-| GMSubs 字幕请求 | 同步查询，总调用超时三秒 |
+| 研究时 SupJav/MissAV 脚本等待 | 普通页面可等 35 秒，验证页面可等 55 秒；SupJav 现已移除 |
+| GMSubs 字幕请求 | 研究时总调用超时三秒；2026-10-01 接口源码为一秒，同步查询 |
 
 依据：[Constant](app/src/main/java/com/fongmi/android/tv/Constant.java)、[ViewModelTaskRunner](app/src/main/java/com/fongmi/android/tv/model/ViewModelTaskRunner.java)、[配套网站脚本](https://github.com/jokers963/CatVodSpider/tree/main/js)。
 
@@ -166,6 +168,6 @@ ExoPlayer 和 mpv 都是应用内置引擎，不等于启动外部播放器。�
 
 Media3 内部状态、媒体会话 `PlaybackState` 和本地 HTTP 状态的数字含义并不完全相同。至少两次观察播放状态与进度增长并结合日志；只出现画面、缓冲或某个数字，不足以判定通过。单样本成功不代表整站稳定。
 
-本项目不通过清应用数据、错误配置历史、解除系统方向锁定或外部播放器来绕过问题。保留用户未提交改动；本轮仅获授权发布 Markdown，不修改本地 TV 工作树或任何运行文件。
+本项目不通过清应用数据、错误配置历史、解除系统方向锁定或外部播放器来绕过问题。保留用户未提交改动；本原理文档仅整理说明，不改变运行文件。后续修改范围以用户当次授权为准。
 
 参考：本仓库 [README](README.md)、[上游 TV](https://github.com/FongMi/TV)、[配套接口说明](https://github.com/jokers963/CatVodSpider/blob/main/LUOYUQIU_ARCHITECTURE.md)。

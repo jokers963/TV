@@ -1,5 +1,11 @@
 # 影視TV
 
+## 落雨秋定制版入口
+
+本页所在的 `fongmi` 分支用于上游同步参考，不是当前落雨秋 APK 的构建分支。定制版开发请进入 [`luoyuqiu` 分支](https://github.com/jokers963/TV/tree/luoyuqiu)，先读其 [README](https://github.com/jokers963/TV/blob/luoyuqiu/README.md)、[AGENTS.md](https://github.com/jokers963/TV/blob/luoyuqiu/AGENTS.md) 和[签名说明](https://github.com/jokers963/TV/blob/luoyuqiu/scripts/SIGNING.md)。
+
+唯一正式配置是 `https://jokers963.github.io/CatVodSpider/json/luoyuqiu.json`；SupJav 已移除，NBD-022 排查已取消。当前状态以共享 AI_HANDOFF 顶部最新记录为准，不按旧原理快照恢复任务。
+
 ## AI 接手与协作
 
 [先读 AGENTS.md](AGENTS.md) → [两个仓库共用的状态与交接记录](https://github.com/jokers963/CatVodSpider/blob/main/AI_HANDOFF.md)。原理文档按任务阅读，不必重新研究全仓。
