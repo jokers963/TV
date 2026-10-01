@@ -1,5 +1,23 @@
 # 影視TV
 
+## 落雨秋定制版开发入口
+
+本分支 `luoyuqiu` 是定制手机版的构建入口；`fongmi` 分支用于上游同步参考，不要直接合并或切换来替代本分支。当前源码版本为 `5.6.3-lyq.3`（versionCode `56303`），包名 `com.jokers963.luoyuqiu`；文档更新不代表已重新构建 APK。
+
+先读 [AGENTS.md](AGENTS.md) 和[共享交接顶部](https://github.com/jokers963/CatVodSpider/blob/main/AI_HANDOFF.md)，再按任务阅读[历史播放器原理](https://github.com/jokers963/TV/blob/fongmi/LUOYUQIU_ARCHITECTURE.md)。唯一正式配置为 `https://jokers963.github.io/CatVodSpider/json/luoyuqiu.json`；SupJav 已移除，NBD-022 排查已取消。
+
+构建使用 JDK 21、项目 Gradle Wrapper 和 [SHA-256 清单](app/libs/luoyuqiu-media3.sha256) 对应的 19 个 Media3 AAR。AAR 未纳入 Git，新 clone 须另备匹配依赖；目前尚未提供自动获取方式。该依赖基线不能直接承诺新版 libass／双字幕能力。
+
+```powershell
+git switch luoyuqiu
+.\gradlew.bat :app:assembleMobileDebug --no-daemon
+.\gradlew.bat :app:assembleMobileRelease --no-daemon
+# Output 必须是尚不存在的新路径；沿用现有密钥及证书沿袭。
+.\scripts\sign-mobile.ps1 -Output ./Release/luoyuqiu-mobile-new.apk
+```
+
+已有工作树先检查未提交改动，不强制切换。Debug APK 在 `app/build/outputs/apk/mobile/debug/`；正式手机版必须使用签名脚本输出，不发布 Gradle 原始 APK。详细步骤和恢复限制见[长期签名说明](scripts/SIGNING.md)。下方为通用上游说明，落雨秋手机版构建和签名以上述入口为准。
+
 適用於 Android TV 與手機的影音應用程式，整合媒體瀏覽與播放體驗，並支援外部配置與 [CatVod](https://github.com/CatVodTVOfficial/CatVodTVJarLoader) Spider 介面擴充。
 
 **App 本身不內建或提供任何內容來源。** 外部內容需自行配置，也可開啟本地媒體檔案或推送媒體網址。
