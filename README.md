@@ -18,6 +18,8 @@ git switch luoyuqiu
 
 已有工作树先检查未提交改动，不强制切换。Debug APK 在 `app/build/outputs/apk/mobile/debug/`；正式手机版必须使用签名脚本输出，不发布 Gradle 原始 APK。详细步骤和恢复限制见[长期签名说明](scripts/SIGNING.md)。下方为通用上游说明，落雨秋手机版构建和签名以上述入口为准。
 
+本机实际开发目录为 `D:/CodexWorkspace/Android/TV563Release`。旧工作树的未提交定制必须逐项比较后再移植，不混入文档同步；旧预览/封面分支的保留与恢复说明见 [BRANCH_ARCHIVE.md](BRANCH_ARCHIVE.md)。
+
 適用於 Android TV 與手機的影音應用程式，整合媒體瀏覽與播放體驗，並支援外部配置與 [CatVod](https://github.com/CatVodTVOfficial/CatVodTVJarLoader) Spider 介面擴充。
 
 **App 本身不內建或提供任何內容來源。** 外部內容需自行配置，也可開啟本地媒體檔案或推送媒體網址。
